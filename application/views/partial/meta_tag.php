@@ -1,0 +1,6 @@
+<?php
+
+/**
+ * Meta tags files
+ */
+
