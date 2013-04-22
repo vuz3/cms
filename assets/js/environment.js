@@ -1,5 +1,22 @@
 $(document).ready(function() {
 
+
+    $("a").click(function() {
+        $("#contener").fadeToggle("slide");
+        
+       //alert($(this).attr("href"));
+    });
+    
+   // $('#contener').fadeIn("normal");
+
+    /*$('#next, #prev').on('click', function(event) {
+        event.preventDefault();
+        var adres = $(this).prop('href');
+        $('#content').stop(true, true).slideUp(1000, function() {
+            window.location.href(adres);
+        });
+    });*/
+
     $("#footer_help").click(function() {
         $("#help").dialog({
             height: 140,
@@ -20,30 +37,23 @@ $(document).ready(function() {
                     'Delete': function() {
                         var dane = $(k).attr('values');
                         $(this).dialog("close");
-                        var action = "http://localhost/cms/index.php/application/article/show";
-                        $.ajax({
-                            type: 'POST',
-                            url: 'http://localhost/cms/index.php/application/article/before',
-                            timeout: 6000,
-                            dataType: "text", // expected format for response
-                            contentType: "application/json", // send as JSON
-                            data: dane,
-                            error: function(request, error) {
-                                if (error == "timeout") {
-                                    alert("timeout");
-                                }
-                                alert('blad');
-                                jQuery.each(request, function(ab, ac) {
-                                    alert(ac);
-                                });
-                            },
-                            success: function(data) {
-                                
-                                alert('ok');
-                            }
+                        var action = "/cms/application/article/delete";
+                        jQuery.post(action,
+                                {
+                                    what: dane,
+                                },
+                                function(response) {
+                                    if (response != 'ok') {
+                                        $("#center").load("/cms/application/article/show");
+                                    } else {
+                                        $("#center").load("/cms/application/show");
+                                    }
+                                }).done(function() {
+                            window.location.reload();
                         });
                     },
-                    'Cancel': function() {
+                    'Cancel'
+                            : function() {
                         $(this).dialog("close");
                     }
                 }

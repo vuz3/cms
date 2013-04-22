@@ -1,4 +1,6 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
+
+defined('SYSPATH') or die('No direct script access.');
 
 /**
  * Main controller
@@ -29,7 +31,6 @@ class Controller_Welcome extends Controller_Template {
      * @var string
      */
     public $template = 'site';
-    
 
     /**
      * Functions get array with or simply href to
@@ -83,6 +84,11 @@ class Controller_Welcome extends Controller_Template {
 
     public function before() {
         parent::before();
+        if (Auth::instance()->logged_in()) {
+            $user = Auth::instance()->get_user();
+        } else {
+            $user = 'You are not logged';
+        }
         $this->template->title = 'CMS';
         $this->template->js = view::factory('partial/js')
                 ->set('scripts', $this->check_js($this->_JS_));
@@ -92,13 +98,8 @@ class Controller_Welcome extends Controller_Template {
     }
 
     public function after() {
-        if(Auth::instance()->logged_in()) {
-            $user = Auth::instance()->get_user();
-        } else {
-            $user = 'You are not logged';
-        }
         $this->template->header = View::factory('partial/header')
-                ->bind('user',$user);
+                ->bind('user', $user);
         $this->template->menu = View::factory('partial/menu');
         $this->template->footer = View::factory('partial/footer');
         parent::after();

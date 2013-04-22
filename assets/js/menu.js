@@ -1,8 +1,5 @@
 $(document).ready(function() {
-   
-    if ($("#menu").is(":visible")) {
-        $("#zwin").addClass("triangle up");
-    }
+    $("#zwin").addClass("triangle up");
 
     $("#zwin").click(function() {
         $("#menu").hide("blind", 500);

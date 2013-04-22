@@ -9,9 +9,6 @@ class Controller_Cms_Article extends Controller_Welcome {
 
     public function before() {
         parent::before();
-        if($this->request->is_ajax()) {
-            $this->auto_render = false;
-        }
         $this->template->category = 'category';
     }
 
@@ -32,7 +29,7 @@ class Controller_Cms_Article extends Controller_Welcome {
 
         $limit = $pagination->items_per_page;
         $offset = $pagination->offset;
-      
+
         $show_article = $pagination_model->load_segregate_element($limit, $offset);
     }
 
@@ -45,7 +42,17 @@ class Controller_Cms_Article extends Controller_Welcome {
     }
 
     public function action_delete() {
-        
+        if ($_POST) {
+            $id = trim($_POST['what']);
+            $art = ORM::factory('Article');
+            $del = $art->where('id', '=', $id)->find();
+            if($del->delete()) {
+                $this->response->status(200);
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
 }
